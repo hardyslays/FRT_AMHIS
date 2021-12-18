@@ -1,0 +1,19 @@
+{
+  "name": "frt_amhis",
+  "version": "1.0.0",
+  "description": "Automated Modular Hospital Inventory system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/HardySLAYS/FRT_AMHIS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HardySLAYS/FRT_AMHIS/issues"
+  },
+  "homepage": "https://github.com/HardySLAYS/FRT_AMHIS#readme"
+}
