@@ -1,0 +1,26 @@
+<%- include("./partials/header"); %>
+<div>
+
+    <!-- <form action="/logout" method="get">
+        <input type="submit" value="LOGOUT">
+    </form> -->
+    <noscript>You need Javascript to properly run this application.</noscript>
+
+    <div class="root d-flex flex-row ">
+        <div id="sidebar">
+            <ul class="list-group m-2">
+                <li class="list-group-item list-group-item-action active list-item my-2" id="sidebar-option-1" onclick="select_sidebar_1()">INVENTORY</li>
+                <li class="list-group-item list-group-item-action list-item my-2" id="sidebar-option-2" onclick="select_sidebar_2()">ITEM TRANSFER</li>
+                <li class="list-group-item list-group-item-action list-item my-2" id="sidebar-option-3" onclick="select_sidebar_3()">TRANSFER AUTOMATION</li>
+                <li class="list-group-item list-group-item-action list-item my-2" id="sidebar-option-4" onclick="select_sidebar_4()">SETTINGS</li>
+            </ul>
+        </div>
+
+        <div id="main" class="flex-grow-1">
+            <%- include("./inventory");%>
+        </div>
+    </div>
+
+</div>
+    <script src="/js/Home.js"></script>
+<%- include("./partials/footer"); %>

@@ -2,9 +2,10 @@
   "name": "frt_amhis",
   "version": "1.0.0",
   "description": "Automated Modular Hospital Inventory system",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,20 @@
   "bugs": {
     "url": "https://github.com/HardySLAYS/FRT_AMHIS/issues"
   },
-  "homepage": "https://github.com/HardySLAYS/FRT_AMHIS#readme"
+  "homepage": "https://github.com/HardySLAYS/FRT_AMHIS#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.2",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.2",
+    "flash": "^1.1.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.15",
+    "passport": "^0.5.2",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7"
+  }
 }
