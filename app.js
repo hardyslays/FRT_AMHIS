@@ -224,6 +224,57 @@ app.post("/inv-list", (req, res) => {
     }
 })
 
+app.post("/add-item", (req, res) => {
+    console.log(req.user);
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let inventory_name = "items_" + req.user[0].inv_id;
+        db.query(`INSERT INTO ${inventory_name}(item_id,item_name,item_desc,quantity) VALUES("${req.body.item_id}", "${req.body.item_name}", "${req.body.item_desc}", ${req.body.quantity});`, (err, rows) => {
+            if(err){
+                console.log("couldn't fatch inventory data: ", err);
+                res.send({'status': -1});
+            }
+            else res.send({'status': 1});
+        })
+    }
+})
+
+app.post("/add-quantity", (req, res) => {
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let inventory_name = "items_" + req.user[0].inv_id;
+        db.query(`SELECT * FROM ${inventory_name} WHERE item_id = "${req.body.item_id}";`, (err, rows) => {
+            if(err){
+                console.log("couldn't fatch inventory data: ", err);
+                res.send({'status': -10});
+            }
+            else{
+                if(!rows.length){
+                    res.send({'status': 11});
+                }
+                else{
+                    console.log(rows[0]);
+                    
+                    let prev_quantity = rows[0].quantity;
+                    let new_quantity =  prev_quantity + parseInt(req.body.quantity);
+
+                    db.query(`UPDATE ${inventory_name} SET quantity = ${new_quantity} WHERE item_id = "${req.body.item_id}";`, (err, rows) => {
+                        if(err){
+                            console.log("couldn't fatch inventory data: ", err);
+                            res.send({'status': -10});
+                        }
+                        else{
+                            res.send({'status': 10});
+                        }
+                    })
+                }
+            }
+        })
+    }
+})
+
+
+
 
 
 

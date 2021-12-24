@@ -1,7 +1,7 @@
 <div class="nav-options d-flex justify-start">
     <button onclick="load_inventory_list()" id="inv-list-btn" class="btn btn-outline-dark m-2">INVENTORY LIST</button>
-    <button onclick="load_add_item()" id="inv-add-btn" class="btn btn-dark m-2">ADD ITEM</button>
-    <button onclick="load_rem_item()" id="inv-rem-btn" class="btn btn-outline-dark m-2">REMOVE ITEM</button>
+    <button onclick="load_add_item()" id="inv-add-btn" class="btn btn-outline-dark m-2">ADD ITEM</button>
+    <button onclick="load_rem_item()" id="inv-rem-btn" class="btn btn-dark m-2">WITHDRAW/REMOVE ITEM</button>
 </div>
 
 <div id="inv-items"  style="display: none;">
@@ -43,36 +43,64 @@
     </div>
 </div>
 
-<div id="add-inv">
-    <h2>ADD NEW ITEM TO INVENTORY</h2>
+<div id="add-inv"  style="display: none;">
+    <h3 id="add-item-response" style="display: none;">this is a msg</h3>
 
-    <form action="/add-item" method="POST">
-        <div class="container">
-            <div class="row">
-                
-                <div class="form-floating mb-2">
-                    <input type="text" name="item_id" id="item_id" placeholder="enter item_id..." class="form-control rounded">
-                    <label for="item_id">ITEM ID</label>
-                </div>
-                <div class="form-floating mb-2">
-                    <input type="text" name="item_name" id="item_name" placeholder="enter item_name..." class="form-control rounded">
-                    <label for="item_name">ITEM NAME</label>
-                </div>
-                <div class="form-floating mb-2">
-                    <input type="text" name="item_desc" id="item_desc" placeholder="enter item_desc..." class="form-control rounded">
-                    <label for="item_desc">ITEM DESCRIPTION</label>
-                </div>
-                <div class="form-floating mb-2">
-                    <input type="text" name="quantity" id="quantity" placeholder="enter quantity..." class="form-control rounded">
-                    <label for="quantity">QUANTITY OF ITEM</label>
-                </div>
+    <h2>ADD NEW ITEM TO INVENTORY</h2>
+    
+    <div class="container">
+        <div class="row">
+            
+            <div class="col form-floating my-3">
+                <input type="text" name="item_id" id="item_id" placeholder="enter item_id..." class="form-control rounded " required>
+                <label for="item_id">ITEM ID</label>
             </div>
+    
+            <div class="col form-floating my-3">
+                <input type="text" name="item_name" id="item_name" placeholder="enter item_name..." class="form-control rounded" required>
+                <label for="item_name">ITEM NAME</label>
+            </div>
+            <div class="w-100"></div>
+            <div class="col form-floating my-3">
+                <input type="text" name="item_desc" id="item_desc" placeholder="enter item_desc..." class="form-control rounded" required>
+                <label for="item_desc">ITEM DESCRIPTION</label>
+            </div>
+    
+            <div class="col form-floating my-3">
+                <input type="text" name="quantity" id="quantity" placeholder="enter quantity..." class="form-control rounded" required>
+                <label for="quantity">QUANTITY OF ITEM</label>
+            </div>
+            
         </div>
-    </form>
+    </div>
+    
+    <button id="add-item-submit" onclick="submit_add_item_form()">ADD ITEM</button>
+    
+    <h3>OR</h3>
+    
+    <h2>ADD QUANTITY OF EXISTING ITEM TO INVENTORY</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col form-floating my-3">
+                <input type="text" name="item_id2" id="item_id2" placeholder="enter item_id2..." class="form-control rounded " required>
+                <label for="item_id2">ITEM ID</label>
+            </div>
+            <div class="col form-floating my-3">
+                <input type="text" name="quantity2" id="quantity2" placeholder="enter quantity2..." class="form-control rounded" required>
+                <label for="quantity2">QUANTITY OF ITEM</label>
+        </div>
+    </div>
+        
+    <button id="add-quantity-submit" onclick="submit_add_quantity()">ADD QUANTITY</button>
 </div>
 
-<div id="rem-inv" style="display: none;">
-r
+<div id="rem-inv">
+    
+    <h2>WITHDRAW ITEM FROM INVENTORY</h2>
+    <p>Enter </p>
+
+
 </div>
 
 <script src="/js/inventory.js"></script>
