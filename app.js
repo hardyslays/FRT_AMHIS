@@ -204,7 +204,6 @@ app.post('/register', [isDuplicateId, isDuplicateUsername], (req, res) => {
     res.redirect('/login')
 })
 
-
 app.post("/inv-list", (req, res) => {
     console.log(req.user);
     if(!req.isAuthenticated())res.send({'status': 0});
@@ -273,7 +272,84 @@ app.post("/add-quantity", (req, res) => {
     }
 })
 
+app.post("/rem-quantity", (req, res) =>{
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let inventory_name = "items_" + req.user[0].inv_id;
+        db.query(`SELECT * FROM ${inventory_name} WHERE item_id = "${req.body.item_id}";`, (err, rows) => {
+            if(err){
+                console.log("couldn't fatch inventory data: ", err);
+                res.send({'status': -20});
+            }
+            else{
+                if(!rows.length){
+                    res.send({'status': 21});
+                }
+                else{
+                    console.log(rows[0]);
+                    
+                    let prev_quantity = rows[0].quantity;
+                    if(prev_quantity < req.body.quantity)res.send({'status': 22});
+                    else{
+                        let new_quantity = prev_quantity - req.body.quantity;
+                        db.query(`UPDATE ${inventory_name} SET quantity = ${new_quantity} WHERE item_id="${req.body.item_id}";`, (err, rows) => {
+                            if(err){
+                                res.send({'status': -20});
+                            }
+                            else{
+                                res.send({'status': 20});
+                            }
+                        })
+                    }
+                }
+            }
+        })
+    }
+})
 
+app.post('/rem-item-details', (req, res) => {
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let inventory_name = "items_" + req.user[0].inv_id;
+        db.query(`SELECT * FROM ${inventory_name} WHERE item_id="${req.body.item_id}";`, (err, rows) => {
+            if(err){
+                console.log("Cannot fetch data:", err);
+                res.send({'status': -20});
+            }
+            else if(!rows.length){
+                console.log('No item found');
+                res.send({'status': 21});
+            }
+            else{
+                let body = {
+                    'item_id': rows[0].item_id,
+                    'item_name': rows[0].item_name,
+                    'item_desc': rows[0].item_desc,
+                    'quantity': rows[0].quantity,
+                }
+                res.send({'status': 20, 'body': body});
+            }
+        })
+    }
+})
+app.post("/rem-item", (req, res) => {
+    console.log(req.body)
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let inventory_name = "items_" + req.user[0].inv_id;
+        
+        db.query(`DELETE FROM ${inventory_name} WHERE item_id="${req.body.item_id}";`, (err, rows) => {
+            if(err){
+                console.log(err);
+                res.send({'status': -41});
+            }
+            else{
+                console.log("item removed");
+                res.send({'status': 40});
+            }
+        })
+    }
+})
 
 
 
@@ -296,3 +372,10 @@ db.connect( (error) => {
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
+
+
+// YASHWANT //
+app.get("/item_transfer",(req,res) => {
+    
+
+})

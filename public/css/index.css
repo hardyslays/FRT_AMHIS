@@ -169,3 +169,52 @@ body{
 #add-quantity-submit:hover{
     background: rgb(23, 201, 0);
 }
+
+/*Remove items from inventory*/
+
+#rem-inv{
+    margin: 25px;
+    color: black;
+    font-size: 20px;
+    text-align: center;
+}
+#rem-inv>h2{
+    background: #212529;
+    color: #EEE;
+    padding: 1rem;
+    font-weight: bolder;
+}
+#rem-inv>div>div>div>label{
+    margin-left: 10px;
+}
+#rem-quantity-submit{
+    width: 200px;
+    height: 50px;
+    background: rgb(226, 0, 0);
+    color: white;
+    font-size: 20px;
+    font-weight: 570;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px 2px rgb(3, 94, 179);
+    border: none;
+}
+#rem-quantity-submit:hover{
+    background: rgb(201, 0, 0);
+}
+
+#rem-inv>h3{
+    text-transform: uppercase;
+    color: rgb(10, 10, 10);
+    font-size: 35px;
+    margin: 15px;
+    border-bottom: solid 3px black;
+    border-top: solid 3px black;
+}
+#rem-item-response{
+    text-align: left;
+}
+.send_request{
+    margin-top: 30px;
+    width : 70%;
+    margin: auto;
+}

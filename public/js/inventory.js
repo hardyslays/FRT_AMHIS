@@ -5,6 +5,8 @@ function setActive(id){
     document.getElementById("inv-add-btn").classList.add("btn-outline-dark");
     document.getElementById("inv-rem-btn").classList.remove("btn-dark");
     document.getElementById("inv-rem-btn").classList.add("btn-outline-dark");
+    document.getElementById("set-min-btn").classList.remove("btn-dark");
+    document.getElementById("set-min-btn").classList.add("btn-outline-dark");
     
     document.getElementById(id).classList.remove("btn-outline-dark");
     document.getElementById(id).classList.add("btn-dark");
@@ -12,6 +14,7 @@ function setActive(id){
     document.getElementById("inv-items").style.display = "none";
     document.getElementById("add-inv").style.display = "none";
     document.getElementById("rem-inv").style.display = "none";
+    document.getElementById("set-min-quan").style.display = "none";
 
     switch(id){
         case "inv-list-btn": document.getElementById("inv-items").style.display = "";
@@ -21,6 +24,9 @@ function setActive(id){
         break;
         
         case "inv-rem-btn": document.getElementById("rem-inv").style.display = "";
+        break;
+
+        case "set-min-btn": document.getElementById("set-min-quan").style.display = "";
         break;
     }
 }
@@ -111,6 +117,7 @@ function adding_item_successful(){
         document.getElementById("add-item-response").style.display = "none";
     }, 5000);
 }
+
 function adding_quantity_successful(){
     load_add_item();
 
@@ -225,6 +232,163 @@ function submit_add_quantity(){
     });
 }
 
+//Remove items js
 function load_rem_item(){
+    document.getElementById("item_id3").value = "";
+    document.getElementById("quantity3").value = "";
+    
+    item_id3.classList.remove("empty_inp");
+    quantity3.classList.remove("empty_inp");
+
     setActive("inv-rem-btn");
 }
+
+function item_withdrawl_successful(){
+    load_rem_item();
+
+    document.getElementById("rem-item-response").innerText = "The given amount withdrawn successfully.";
+    document.getElementById("rem-item-response").style.display = "";
+    setTimeout(() => {
+        document.getElementById("rem-item-response").style.display = "none";
+    }, 5000);
+}
+
+function withdrawl_item_failed(msg){
+    load_rem_item();
+
+    document.getElementById("rem-item-response").innerText = msg;
+    document.getElementById("rem-item-response").style.display = "";
+    setTimeout(() => {
+        document.getElementById("rem-item-response").style.display = "none";
+    }, 8000);
+}
+
+function submit_rem_quantity(){
+    
+    let item_id = document.getElementById("item_id3");
+    let quantity = document.getElementById("quantity3");
+
+    if(item_id.value == "")item_id.classList.add("empty_inp");
+    else item_id.classList.remove("empty_inp");
+
+    if(quantity.value == "")quantity.classList.add("empty_inp");
+    else quantity.classList.remove("empty_inp");
+
+    if(item_id.value == "" || quantity.value == "")return;
+
+    let body = {
+        'item_id': item_id.value,
+        'quantity': quantity.value
+    };
+
+    fetch("/rem-quantity", {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        'body': JSON.stringify(body)
+    })
+    .then(response => response.json())
+    .then( data => {
+        console.log(data)
+        if(data.status == 20)
+        {
+            item_withdrawl_successful();
+        }
+        else if(data.status == 21){
+            withdrawl_item_failed("No item found for given ITEM ID.");
+        }
+        else if(data.status == 22){
+            withdrawl_item_failed("Not enough items to withdraw given amount. Please check item's quantity.");
+        }
+        else{
+            withdrawl_item_failed("Item withdrawl failed. Please try again later.");
+        }
+    })
+}
+
+function extract_rem_item_detail(){
+    let item_id = document.getElementById("item_id4");
+    
+    if(item_id.value == ""){
+        item_id.classList.add("empty_inp");
+        return;
+    }
+    else item_id.classList.remove("empty_inp");
+
+    let body = {
+        'item_id': item_id.value
+    };
+
+    fetch( '/rem-item-details',  {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        'body': JSON.stringify(body)
+    })
+    .then(response => response.json())
+    .then( data => {
+        if(data.status == 20){
+            document.getElementById("item_id5").value = data.body.item_id;
+            document.getElementById("item_name5").value = data.body.item_name;
+            document.getElementById("item_desc5").value = data.body.item_desc;
+            document.getElementById("quantity5").value = data.body.quantity;
+
+            document.getElementById("get-item-details").style.display = "";
+        }
+        else if(data.status == 21){
+            window.alert("No item with given Item_id found.");
+        }
+        else{
+            window.alert("Something went wrong. Try again later.");
+        }
+    })
+}
+
+document.getElementById("item_id4").oninput = () => {
+    document.getElementById("get-item-details").style.display = "none";
+}
+
+function rem_item(){
+    let item_id = document.getElementById("item_id5");
+    let body = {
+        'item_id': item_id.value
+    };
+
+    fetch("/rem-item",{
+        method: "POST",
+        headers: {
+            'content-type': 'application/json'
+        },
+        'body': JSON.stringify(body)
+    })
+    .then(response => response.json())
+    .then( data => {
+        if(data.status == 40){
+            document.getElementById("item_id4").value = "";
+            document.getElementById("get-item-details").style.display = "none";
+
+            alert("Item removed from Inventory successfully.");
+        }
+        else{
+            alert("Something went wrong. Try again later.");
+        }
+    })
+}
+
+
+//Setting minimum quantity for alerts
+function load_set_min_quantity(){
+    setActive("set-min-btn");
+}
+
+
+
+
+
+
+
+// window.onload = () => {
+//     load_inventory_list();
+// }

@@ -1,10 +1,11 @@
 <div class="nav-options d-flex justify-start">
     <button onclick="load_inventory_list()" id="inv-list-btn" class="btn btn-outline-dark m-2">INVENTORY LIST</button>
     <button onclick="load_add_item()" id="inv-add-btn" class="btn btn-outline-dark m-2">ADD ITEM</button>
-    <button onclick="load_rem_item()" id="inv-rem-btn" class="btn btn-dark m-2">WITHDRAW/REMOVE ITEM</button>
+    <button onclick="load_rem_item()" id="inv-rem-btn" class="btn btn-outline-dark m-2">WITHDRAW/REMOVE ITEM</button>
+    <button onclick="load_set_min_quantity()" id="set-min-btn" class="btn btn-dark m-2">SET MINIMUM QUANTITY</button>
 </div>
 
-<div id="inv-items"  style="display: none;">
+<div id="inv-items" style="display: none;">
     <h2>ITEMS IN THE INVENTORY</h2>
 
     <div class="container" id="inv-list">
@@ -43,7 +44,7 @@
     </div>
 </div>
 
-<div id="add-inv"  style="display: none;">
+<div id="add-inv" style="display: none;">
     <h3 id="add-item-response" style="display: none;">this is a msg</h3>
 
     <h2>ADD NEW ITEM TO INVENTORY</h2>
@@ -89,18 +90,81 @@
             <div class="col form-floating my-3">
                 <input type="text" name="quantity2" id="quantity2" placeholder="enter quantity2..." class="form-control rounded" required>
                 <label for="quantity2">QUANTITY OF ITEM</label>
+            </div>
         </div>
     </div>
         
     <button id="add-quantity-submit" onclick="submit_add_quantity()">ADD QUANTITY</button>
 </div>
 
-<div id="rem-inv">
+<div id="rem-inv" style="display: none;">
     
-    <h2>WITHDRAW ITEM FROM INVENTORY</h2>
-    <p>Enter </p>
+    <h3 id="rem-item-response" style="display: none;">this is a msg</h3>
+    <h2>WITHDRAW SOME QUANTITY OF ITEM FROM INVENTORY</h2>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col form-floating my-3">
+                <input type="text" name="item_id3" id="item_id3" placeholder="enter item_id3..." class="form-control rounded " required>
+                <label for="item_id3">ITEM ID</label>
+            </div>
+            <div class="col form-floating my-3">
+                <input type="text" name="quantity3" id="quantity3" placeholder="enter quantity3..." class="form-control rounded" required>
+                <label for="quantity3">QUANTITY OF ITEM</label>
+            </div>
+        </div>
+    </div>
 
+    <button id="rem-quantity-submit" onclick="submit_rem_quantity()">WITHDRAW ITEM</button>
 
+    <h3>OR</h3>
+    <h2>REMOVE AN ITEM FROM THE INVENTORY</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="col form-floating my-3">
+                    <input type="text" name="item_id4" id="item_id4" placeholder="enter item_id4..." class="form-control rounded " required>
+                    <label for="item_id4">ITEM ID</label>
+                </div>
+            </div>
+            <div class="col">
+                <button id="rem-item-detail" class="mt-3" onclick="extract_rem_item_detail()">GET ITEM DETAIL</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="get-item-details" style="display: none;">
+        <div class="row">
+
+            <div class="col form-floating my-3">
+                <input type="text" name="item_id5" id="item_id5" placeholder="enter item_id..." class="form-control rounded " disabled>
+                <label for="item_id5">ITEM ID</label>
+            </div>
+    
+            <div class="col form-floating my-3">
+                <input type="text" name="item_name5" id="item_name5" placeholder="enter item_name..." class="form-control rounded" disabled>
+                <label for="item_name5">ITEM NAME</label>
+            </div>
+            <div class="w-100"></div>
+            <div class="col form-floating my-3">
+                <input type="text" name="item_desc5" id="item_desc5" placeholder="enter item_desc5..." class="form-control rounded" disabled>
+                <label for="item_desc5">ITEM DESCRIPTION</label>
+            </div>
+    
+            <div class="col form-floating my-3">
+                <input type="text" name="quantity5" id="quantity5" placeholder="enter quantity5..." class="form-control rounded" disabled>
+                <label for="quantity5">QUANTITY OF ITEM</label>
+            </div>
+            <div class="col">
+                <button id="rem-item" class="mt-3" onclick="rem_item()">REMOVE ITEM</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="set-min-quan">
+    set
 </div>
 
 <script src="/js/inventory.js"></script>

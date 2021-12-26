@@ -3,6 +3,11 @@ function clearActive(){
     document.getElementById("sidebar-option-2").classList.remove("active");
     document.getElementById("sidebar-option-3").classList.remove("active");
     document.getElementById("sidebar-option-4").classList.remove("active");
+
+    document.getElementById("main-1").style.display = "none";
+    document.getElementById("main-2").style.display = "none";
+    document.getElementById("main-3").style.display = "none";
+    document.getElementById("main-4").style.display = "none";
 }
 
 function select_sidebar_1(){
@@ -19,6 +24,7 @@ function select_sidebar_1(){
         clearActive();
 
         document.getElementById("sidebar-option-1").classList.add("active");
+        document.getElementById("main-1").style.display = "";
     }
 }
 
@@ -36,6 +42,7 @@ function select_sidebar_2(){
         clearActive();
         
         document.getElementById("sidebar-option-2").classList.add("active");
+        document.getElementById("main-2").style.display = "";
     }
 }
 
@@ -53,6 +60,7 @@ function select_sidebar_3(){
         clearActive();
         
         document.getElementById("sidebar-option-3").classList.add("active");
+        document.getElementById("main-3").style.display = "";
     }
 }
 
@@ -70,5 +78,6 @@ function select_sidebar_4(){
         clearActive();
         
         document.getElementById("sidebar-option-4").classList.add("active");
+        document.getElementById("main-4").style.display = "";
     }
 }

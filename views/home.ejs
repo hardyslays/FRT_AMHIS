@@ -16,8 +16,19 @@
             </ul>
         </div>
 
-        <div id="main" class="flex-grow-1">
-            <%- include("./inventory");%>
+        <div id="main" class="flex-grow-1 sidebar-2">
+            <div id="main-1">
+                <%- include("./inventory");%>
+            </div>
+            <div id="main-2" style="display: none;">
+                <%- include("./item_transfer");%>
+            </div>
+            <div id="main-3"  style="display: none;">
+                <%- include("./transfer_automation");%>
+            </div>
+            <div id="main-4" style="display: none;">
+                <%- include("./settings");%>
+            </div>
         </div>
     </div>
 
