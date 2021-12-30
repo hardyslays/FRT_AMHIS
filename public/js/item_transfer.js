@@ -208,12 +208,12 @@ function make_received_request_table(body){
         sen_id.innerText = el.sen_id;
 
         let acceptBtn = document.createElement("button");
-        acceptBtn.classList.add("greenBtn");
+        acceptBtn.classList.add("green", "decideBtn");
         acceptBtn.setAttribute("onclick", `accept_request("${el.transfer_id}")`);
         acceptBtn.innerText = "ACCEPT";
         
         let declineBtn = document.createElement("button");
-        declineBtn.classList.add("redBtn");
+        declineBtn.classList.add("red", "decideBtn");
         declineBtn.setAttribute("onclick", `decline_request("${el.transfer_id}")`);
         declineBtn.innerText = "DECLINE";
 

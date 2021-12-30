@@ -24,6 +24,9 @@
 </div>
 
 <div id="items-list">
+
+    <h2>LIST OF ALL ITEMS PRESENT IN THE DATABASE</h2>
+
     <div id="search-items-bar">
 
     </div>
@@ -68,7 +71,7 @@
         </div>
     </div>
     
-    <button id="add-item-submit" onclick="submit_add_item_form()">ADD ITEM</button>
+    <button id="add-item-submit" class="green" onclick="submit_add_item_form()">ADD ITEM</button>
     
     <h3>OR</h3>
     
@@ -87,7 +90,7 @@
         </div>
     </div>
         
-    <button id="add-quantity-submit" onclick="submit_add_quantity()">ADD QUANTITY</button>
+    <button id="add-quantity-submit" class="green" onclick="submit_add_quantity()">ADD QUANTITY</button>
 </div>
 
 <div id="rem-inv" style="display: none;">
@@ -108,7 +111,7 @@
         </div>
     </div>
 
-    <button id="rem-quantity-submit" onclick="submit_rem_quantity()">WITHDRAW ITEM</button>
+    <button id="rem-quantity-submit" class="red" onclick="submit_rem_quantity()">WITHDRAW ITEM</button>
 
     <h3>OR</h3>
     <h2>REMOVE AN ITEM FROM THE INVENTORY</h2>
@@ -122,7 +125,7 @@
                 </div>
             </div>
             <div class="col">
-                <button id="rem-item-detail" class="mt-3" onclick="extract_rem_item_detail()">GET ITEM DETAIL</button>
+                <button id="rem-item-detail" class="mt-3 red" onclick="extract_rem_item_detail()">GET ITEM DETAIL</button>
             </div>
         </div>
     </div>
@@ -150,7 +153,7 @@
                 <label for="quantity5">QUANTITY OF ITEM</label>
             </div>
             <div class="col">
-                <button id="rem-item" class="mt-3" onclick="rem_item()">REMOVE ITEM</button>
+                <button id="rem-item" class="mt-3 red" onclick="rem_item()">REMOVE ITEM</button>
             </div>
         </div>
     </div>
@@ -175,7 +178,7 @@
         </div>
     </div>
     
-    <button id="min-quan" class="mt-3" onclick="min_quan()">SET MINIMUM QUANTITY ALERT</button>
+    <button id="min-quan" class="mt-3 red" onclick="min_quan()">SET MINIMUM QUANTITY ALERT</button>
 
 </div>
 

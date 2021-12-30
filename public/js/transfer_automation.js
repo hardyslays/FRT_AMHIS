@@ -279,12 +279,12 @@ function make_pending_reqeusts_table(body){
         transfer_quan.innerText = el.transfer_quantity;
 
         let acceptBtn = document.createElement("button");
-        acceptBtn.classList.add("greenBtn");
+        acceptBtn.classList.add("green", "decideBtn");
         acceptBtn.setAttribute("onclick", `accept_request("${el.rec_id}", "${el.Item_id}")`);
         acceptBtn.innerText = "ACCEPT";
         
         let declineBtn = document.createElement("button");
-        declineBtn.classList.add("redBtn");
+        declineBtn.classList.add("red", "decideBtn");
         declineBtn.setAttribute("onclick", `decline_request("${el.rec_id}", "${el.Item_id}")`);
         declineBtn.innerText = "DECLINE";
 
