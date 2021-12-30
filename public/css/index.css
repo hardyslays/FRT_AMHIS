@@ -214,7 +214,231 @@ body{
     text-align: left;
 }
 .send_request{
-    margin-top: 30px;
     width : 70%;
     margin: auto;
+    margin-top: 30px;
+}
+
+#rem-item-detail{
+    width: 200px;
+    height: 50px;
+    background: rgb(226, 0, 0);
+    color: white;
+    font-size: 20px;
+    font-weight: 570;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px 2px rgb(3, 94, 179);
+    border: none;
+}
+
+#rem-item-detail:hover{
+    background: rgb(201, 0, 0);
+}
+
+#rem-item{
+    width: 200px;
+    height: 50px;
+    background: rgb(226, 0, 0);
+    color: white;
+    font-size: 20px;
+    font-weight: 570;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px 2px rgb(3, 94, 179);
+    border: none;
+}
+
+#rem-item:hover{
+    background: rgb(201, 0, 0);
+}
+
+
+/* Set minimum quantity*/
+#set-min-quan>h2{
+    background: #212529;
+    color: #EEE;
+    padding: 1rem;
+    font-weight: bolder;
+}
+
+#set-min-quan>h3{
+    text-transform: uppercase;
+    color: rgb(10, 10, 10);
+    font-size: 20px;
+    margin: 15px;
+    text-align: left;
+}
+
+#set-min-quan{
+    margin: 25px;
+    color: black;
+    font-size: 20px;
+    text-align: center;
+}
+
+#set-min-quan>div>div>div>label{
+    margin-left: 10px;
+}
+#min-quan{
+    width: 270px;
+    height: 75px;
+    background: rgb(226, 0, 0);
+    color: white;
+    font-size: 20px;
+    font-weight: 570;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px 2px rgb(3, 94, 179);
+    border: none;
+}
+
+#min-quan:hover{
+    background: rgb(201, 0, 0);
+}
+
+
+/* ITEM TRANSFER */
+#send-request{
+    margin: 25px;
+    color: black;
+    font-size: 20px;
+    text-align: center;
+}
+#send-request>h2{
+    background: #212529;
+    color: #EEE;
+    padding: 1rem;
+    font-weight: bolder;
+}
+#send-request>div>div>div>label{
+    margin-left: 10px;
+}
+
+
+
+
+
+/* TRANSFER AUTOMATION PAGE */
+
+/* CONNECTION LIST */
+#connections{
+    margin: 25px;
+}
+#connections>h2{
+    background: #212529;
+    color: #EEE;
+    padding: 1rem;
+    font-weight: bolder;
+    margin-top: 25px;
+    margin-bottom: 8px;
+}
+
+.connections-table{
+    font-size: 20px;
+}
+.connections-table>.head{
+    font-weight: bolder;
+    background: #212529;
+}
+
+.connections-table>.row:nth-child(2n+2){
+    background: #EEE;
+    color: #222;
+}
+.connections-table>.row:nth-child(2n+2):hover{
+    background: rgb(201, 201, 201);
+    color: rgb(10, 10, 10);
+}
+
+.connections-table>.row:nth-child(2n+3){
+    background: rgb(165, 165, 165);
+    color: #222;
+}
+.connections-table>.row:nth-child(2n+3):hover{
+    background: rgb(134, 134, 134);
+    color: rgb(10, 10, 10);
+}
+
+#send_table_body>.row:nth-child(2n+1){
+    background: #EEE;
+    color: #222;
+}
+#send_table_body>.row:nth-child(2n+1):hover{
+    background: rgb(201, 201, 201);
+    color: rgb(10, 10, 10);
+}
+
+#send_table_body>.row:nth-child(2n+2){
+    background: rgb(165, 165, 165);
+    color: #222;
+}
+#send_table_body>.row:nth-child(2n+2):hover{
+    background: rgb(134, 134, 134);
+    color: rgb(10, 10, 10);
+}
+#rec_table_body>.row:nth-child(2n+1){
+    background: #EEE;
+    color: #222;
+}
+#rec_table_body>.row:nth-child(2n+1):hover{
+    background: rgb(201, 201, 201);
+    color: rgb(10, 10, 10);
+}
+
+#rec_table_body>.row:nth-child(2n+2){
+    background: rgb(165, 165, 165);
+    color: #222;
+}
+#rec_table_body>.row:nth-child(2n+2):hover{
+    background: rgb(134, 134, 134);
+    color: rgb(10, 10, 10);
+}
+/* SEND CONNECTION */
+#send-connection{
+    margin: 25px;
+    color: black;
+    font-size: 20px;
+    text-align: center;
+    margin: 25px;
+}
+#send-connection>h2{
+    background: #212529;
+    color: #EEE;
+    padding: 1rem;
+    font-weight: bolder;
+    margin-top: 25px;
+    margin-bottom: 8px;
+}
+#send-connection>div>div>div>label{
+    margin-left: 10px;
+}
+
+/* PENDING REQUESTS */
+#pending-requests{
+    margin: 25px;
+    font-size: 20px;
+    text-align: center;
+    margin: 25px;
+}
+#pending-requests>h2{
+    background: #212529;
+    color: #EEE;
+    padding: 1rem;
+    font-weight: bolder;
+    margin-top: 25px;
+    margin-bottom: 8px;
+}
+
+/* ISSUES IN AUTOMATION */
+#issues{
+    margin: 25px;   
+    font-size: 20px;
+    text-align: center;
+    margin: 25px;
+}
+#issues>h2{
+    background: #212529;
+    color: #EEE;
+    padding: 1rem;
+    font-weight: bolder;
+    margin-top: 25px;
+    margin-bottom: 8px;
 }

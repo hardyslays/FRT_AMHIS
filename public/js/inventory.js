@@ -1,6 +1,9 @@
-function setActive(id){
+function SetActiveInventoryPage(id){
+    console.log("start set.");
     document.getElementById("inv-list-btn").classList.remove("btn-dark");
     document.getElementById("inv-list-btn").classList.add("btn-outline-dark");
+    document.getElementById("items-list-btn").classList.remove("btn-dark");
+    document.getElementById("items-list-btn").classList.add("btn-outline-dark");
     document.getElementById("inv-add-btn").classList.remove("btn-dark");
     document.getElementById("inv-add-btn").classList.add("btn-outline-dark");
     document.getElementById("inv-rem-btn").classList.remove("btn-dark");
@@ -12,6 +15,7 @@ function setActive(id){
     document.getElementById(id).classList.add("btn-dark");
  
     document.getElementById("inv-items").style.display = "none";
+    document.getElementById("items-list").style.display = "none";
     document.getElementById("add-inv").style.display = "none";
     document.getElementById("rem-inv").style.display = "none";
     document.getElementById("set-min-quan").style.display = "none";
@@ -19,7 +23,10 @@ function setActive(id){
     switch(id){
         case "inv-list-btn": document.getElementById("inv-items").style.display = "";
         break;
-        
+
+        case "items-list-btn": document.getElementById("items-list").style.display = "";
+        break;
+
         case "inv-add-btn": document.getElementById("add-inv").style.display = "";
         break;
         
@@ -29,6 +36,8 @@ function setActive(id){
         case "set-min-btn": document.getElementById("set-min-quan").style.display = "";
         break;
     }
+
+    console.log("SET PAGE FOR: ", id);
 }
 
 function make_inv_table(body){
@@ -80,7 +89,7 @@ function load_inventory_list(){
     .then( data => {
         console.log(data);
         if(data.status == 1){
-            setActive("inv-list-btn");
+            SetActiveInventoryPage("inv-list-btn");
 
             make_inv_table(data.body);
         }
@@ -90,9 +99,60 @@ function load_inventory_list(){
     });
 }
 
+function make_item_list_table(body){
+    let table = document.getElementById("items-list-body");
+    table.innerHTML = "";
+
+    body.forEach( el => {
+        let row = document.createElement("div");
+        row.classList.add("row");
+
+        let item_id = document.createElement("div");
+        item_id.classList.add("col");
+        item_id.innerText = el.item_id;
+
+        let item_name = document.createElement("div");
+        item_name.classList.add("col");
+        item_name.innerText = el.item_name;
+
+        let item_desc = document.createElement("div");
+        item_desc.classList.add("col");
+        item_desc.innerText = el.item_desc;
+
+        row.appendChild(item_id);
+        row.appendChild(item_name);
+        row.appendChild(item_desc);
+
+        table.appendChild(row);
+    })
+}
+
+function make_item_list(){
+    fetch("/item-list", {
+        method: 'GET',
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then( data => {
+        if(data.status == 1){
+            make_item_list_table(data.body);
+        }
+        else alert("Something went wrong. Please try again later.");
+    })
+}
+
+function load_items_list(){
+    make_item_list();
+
+    SetActiveInventoryPage("items-list-btn");
+}
+
+
 function load_add_item(){
     document.getElementById("item_id").value = "";
-    document.getElementById("item_name").value = "";
+        document.getElementById("item_name").value = "";
     document.getElementById("item_desc").value = "";
     document.getElementById("quantity").value = "";
     document.getElementById("item_id2").value = "";
@@ -105,7 +165,7 @@ function load_add_item(){
     item_id2.classList.remove("empty_inp");
     quantity2.classList.remove("empty_inp");
     
-    setActive("inv-add-btn");    
+    SetActiveInventoryPage("inv-add-btn");    
 }
 
 function adding_item_successful(){
@@ -236,11 +296,15 @@ function submit_add_quantity(){
 function load_rem_item(){
     document.getElementById("item_id3").value = "";
     document.getElementById("quantity3").value = "";
+    document.getElementById("item_id4").value = "";
     
-    item_id3.classList.remove("empty_inp");
-    quantity3.classList.remove("empty_inp");
+    document.getElementById("item_id3").classList.remove("empty_inp");
+    document.getElementById("quantity3").classList.remove("empty_inp");
+    document.getElementById("item_id4").classList.remove("empty_inp");
 
-    setActive("inv-rem-btn");
+    document.getElementById("get-item-details").style.display = "none";
+
+    SetActiveInventoryPage("inv-rem-btn");
 }
 
 function item_withdrawl_successful(){
@@ -377,10 +441,54 @@ function rem_item(){
     })
 }
 
-
 //Setting minimum quantity for alerts
 function load_set_min_quantity(){
-    setActive("set-min-btn");
+    document.getElementById("item_id6").value = "";
+    document.getElementById("quantity6").value = "";
+
+    document.getElementById("item_id6").classList.remove("empty_inp");
+    document.getElementById("quantity6").classList.remove("empty_inp");
+
+    SetActiveInventoryPage("set-min-btn");
+}
+
+function min_quan(){
+    let item_id = document.getElementById("item_id6");
+    let min_quan = document.getElementById("quantity6");
+
+    if(item_id.value == ""){
+        item_id.classList.add("empty_inp");
+    }
+    if( min_quan.value == ""){
+        min_quan.classList.add("empty_inp");
+    }
+
+    if(item_id.value == "" || min_quan.value == "")return;
+
+    let body = {
+        'item_id': item_id.value,
+        'quantity': min_quan.value
+    };
+
+    fetch("/set-min-quan", {    
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        'body': JSON.stringify(body)
+    })
+    .then(response => response.json())
+    .then( data => {
+        if(data.status == 51){
+            alert(`Minimum quantity alert has been removed for Item with item ID = ${item_id.value}.`);
+        }
+        else if(data.status == 52){
+            alert(`Successfully set Minimum quantity alert for Item with item ID = ${item_id.value}.`);
+        }
+        else{
+            alert("Something went wrong. Try again later.");
+        }
+    })
 }
 
 
@@ -388,7 +496,6 @@ function load_set_min_quantity(){
 
 
 
-
-// window.onload = () => {
-//     load_inventory_list();
-// }
+window.onload = () => {
+    load_inventory_list();
+}

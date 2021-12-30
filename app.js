@@ -8,6 +8,7 @@ const passport = require('passport')
 const localStrategy = require('passport-local').Strategy
 const flash = require('flash')
 const { redirect } = require('express/lib/response')
+const req = require('express/lib/request')
 
 
 
@@ -160,6 +161,137 @@ app.get('/logout', isLoggedIn, (req,res) =>{
 
     res.redirect('/')
 })
+app.get("/pending-automation-requests", (req, res) => {
+    console.log(req.body)
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let inv_id = req.user[0].inv_id;
+
+        db.query(`SELECT * FROM connection LEFT JOIN inventories ON connection.rec_id = inventories.inv_id WHERE connection.sen_id="${inv_id}" AND connection.status=0;`, (err, rows) => {
+            if(err){
+                console.log(err);
+                res.send({'status': -100});
+            }
+            else{
+                console.log("OK pending");
+                res.send({'status': 100, 'body':rows});
+            }
+        })
+    }
+})
+
+app.get("/request-history", (req, res) =>{
+    console.log(req.body)
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let inv_id = req.user[0].inv_id;
+
+        db.query(`SELECT * FROM connection LEFT JOIN inventories ON connection.sen_id = inventories.inv_id WHERE connection.rec_id="${inv_id}";`, (err, rows) => {
+            if(err){
+                console.log(err);
+                res.send({'status': -150});
+            }
+            else{
+                console.log("OK status");
+                console.log(rows)
+                res.send({'status': 150, 'body':rows});
+            }
+        })
+    }
+})
+app.get("/automation-transfer-log-as-sender", (req, res) => {
+    console.log(req.body)
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let inv_id = req.user[0].inv_id;
+        
+        db.query(`SELECT * FROM automation_transfer_log LEFT JOIN inventories ON automation_transfer_log.sen_id = inventories.inv_id WHERE automation_transfer_log.sen_id="${inv_id}";`, (err, rows) => {
+            if(err){
+                console.log(err);
+                res.send({'status': -1});
+            }
+            else{
+                console.log("OK status");
+                console.log(rows)
+                res.send({'status': 1, 'body':rows});
+            }
+        })
+    }
+})
+app.get("/automation-transfer-log-as-receiver", (req, res) => {
+    console.log(req.body)
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let inv_id = req.user[0].inv_id;
+        
+        db.query(`SELECT * FROM automation_transfer_log LEFT JOIN inventories ON automation_transfer_log.sen_id = inventories.inv_id WHERE automation_transfer_log.rec_id="${inv_id}";`, (err, rows) => {
+            if(err){
+                console.log(err);
+                res.send({'status': -1});
+            }
+            else{
+                console.log("OK status");
+                console.log(rows)
+                res.send({'status': 1, 'body':rows});
+            }
+        })
+    }
+})
+
+app.get("/automation-issue-as-sender", (req, res) => {
+    console.log(req.body)
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let inv_id = req.user[0].inv_id;
+        
+        db.query(`SELECT * FROM automation_issue LEFT JOIN inventories ON automation_issue.sen_id = inventories.inv_id WHERE automation_issue.sen_id="${inv_id}";`, (err, rows) => {
+            if(err){
+                console.log(err);
+                res.send({'status': -1});
+            }
+            else{
+                console.log("OK status");
+                console.log(rows)
+                res.send({'status': 1, 'body':rows});
+            }
+        })
+    }
+})
+app.get("/automation-issue-as-receiver", (req, res) => {
+    console.log(req.body)
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let inv_id = req.user[0].inv_id;
+        
+        db.query(`SELECT * FROM automation_issue LEFT JOIN inventories ON automation_issue.sen_id = inventories.inv_id WHERE automation_issue.rec_id="${inv_id}";`, (err, rows) => {
+            if(err){
+                console.log(err);
+                res.send({'status': -1});
+            }
+            else{
+                console.log("OK status");
+                console.log(rows)
+                res.send({'status': 1, 'body':rows});
+            }
+        })
+    }
+})
+app.get("/item-list", (req, res) => {
+    console.log(req.body)
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        db.query(`SELECT * FROM items;`, (err, rows) => {
+            if(err){
+                console.log(err);
+                res.send({'status': -1});
+            }
+            else{
+                console.log(rows);
+                res.send({'status': 1, 'body': rows});
+            }
+        })
+    }
+})
 
 //POST routes
 app.post('/login' , passport.authenticate('local', {
@@ -230,10 +362,28 @@ app.post("/add-item", (req, res) => {
         let inventory_name = "items_" + req.user[0].inv_id;
         db.query(`INSERT INTO ${inventory_name}(item_id,item_name,item_desc,quantity) VALUES("${req.body.item_id}", "${req.body.item_name}", "${req.body.item_desc}", ${req.body.quantity});`, (err, rows) => {
             if(err){
-                console.log("couldn't fatch inventory data: ", err);
+                console.log("couldn't fetch inventory data: ", err);
                 res.send({'status': -1});
             }
-            else res.send({'status': 1});
+            else {
+                db.query(`SELECT * FROM items WHERE item_id = "${req.body.item_id}"`, (err, rows) => {
+                    if(err){
+                        console.log("couldn't fetch inventory data: ", err);
+                        res.send({'status': -1});
+                    }
+                    else if(!rows.length){
+                        db.query(`INSERT INTO items VALUES("${req.body.item_id}","${req.body.item_name}", "${req.body.item_desc}");`, (err, rows) => {
+                            if(err){
+                                console.log("couldn't fetch inventory data: ", err);
+                                res.send({'status': -1});
+                            }
+                            else{
+                                res.send({'status': 1});
+                            }
+                        })
+                    }
+                })
+            }
         })
     }
 })
@@ -351,7 +501,153 @@ app.post("/rem-item", (req, res) => {
     }
 })
 
+app.post("/set-min-quan", (req, res) => {
+    console.log(req.body)
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let inventory_name = "items_" + req.user[0].inv_id;
 
+        if(parseInt(req.body.quantity) == -1)
+        {
+            db.query(`UPDATE ${inventory_name} SET min_quantity=NULL WHERE item_id="${req.body.item_id}";`, (err, rows) => {
+                if(err){
+                    console.log(err);
+                    res.send({'status': -51});
+                }
+                else res.send({'status': 51});
+            })
+        }
+        else
+        {
+            db.query(`UPDATE ${inventory_name} SET min_quantity=${req.body.quantity} WHERE item_id="${req.body.item_id}";`, (err, rows) => {
+                if(err){
+                    console.log(err);
+                    res.send({'status': -52});
+                }
+                else res.send({'status': 52});
+            })
+        }
+    }
+
+})
+
+app.post("/automation_sender_table", (req, res) => {
+    console.log(req.body)
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let inv_id = req.user[0].inv_id;
+
+        db.query(`SELECT * FROM connection LEFT JOIN inventories ON connection.rec_id = inventories.inv_id WHERE connection.sen_id="${inv_id}" AND connection.status=1;`, (err, rows) => {
+            if(err){
+                console.log(err);
+                res.send({'status': -1});
+            }
+            else{
+                console.log("OK status");
+                res.send({'status': 1, 'body':rows});
+            }
+        })
+    }
+})
+
+app.post("/automation_receiver_table", (req, res) => {
+    console.log(req.body)
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let inv_id = req.user[0].inv_id;
+
+        db.query(`SELECT * FROM connection LEFT JOIN inventories ON connection.sen_id = inventories.inv_id WHERE connection.rec_id="${inv_id}" AND connection.status=1;`, (err, rows) => {
+            if(err){
+                console.log(err);
+                res.send({'status': -1});
+            }
+            else{
+                console.log("OK status");
+                res.send({'status': 1, 'body':rows});
+            }
+        })
+    }
+})
+
+app.post("/send-connection-request", (req, res) => {
+    console.log(req.body)
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let rec_id = req.user[0].inv_id;
+
+        if(rec_id == req.body.sen_id){
+            res.send({'status': 120});
+            return;
+        }
+
+        db.query(`SELECT * FROM inventories WHERE inv_id = "${req.body.sen_id}";`, (err, rows) =>{
+            if(err){
+                console.log(err);
+                res.send({'status': -100});
+            }
+            else if(!rows.length){
+                console.log("No such sender");
+                res.send({'status': 110});
+            }
+            else{
+                db.query(`SELECT * FROM items WHERE item_id = "${req.body.item_id}";`, (err, rows) => {
+                    if(err){
+                        console.log(err);
+                        res.send({'status': -100});
+                    }
+                    else if(!rows.length){
+                        console.log("No such item");
+                        res.send({'status': 110});
+                    }
+                    else{
+                        db.query(`INSERT INTO connection VALUES("${req.body.sen_id}", "${rec_id}", "${req.body.item_id}", ${req.body.min_quan}, ${req.body.trans_quan}, 0);`, (err, rows) => {
+                            if(err){
+                                console.log(err);
+                                res.send({'status': -100});
+                            }
+                            else{
+                                console.log("OK query");
+                                res.send({'status': 100});
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+})
+
+app.post("/accept-automation-request", (req, res) => {
+    console.log(req.body)
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let sen_id = req.user[0].inv_id;
+
+        db.query(`UPDATE connection SET status=1 WHERE sen_id="${sen_id}" AND rec_id="${req.body.rec_id}" AND Item_id="${req.body.item_id}";`, (err, rows) => {
+            if(err){
+                console.log(err);
+                res.send({'status': -200});
+            }
+            else res.send({'status': 200});
+        })
+    }
+})
+
+app.post("/decline-automation-request", (req, res) => {
+    console.log(req.body)
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let sen_id = req.user[0].inv_id;
+
+        db.query(`UPDATE connection SET status=-1 WHERE sen_id="${sen_id}" AND rec_id="${req.body.rec_id}" AND Item_id="${req.body.item_id}";`, (err, rows) => {
+            if(err){
+                console.log(err);
+                res.send({'status': -200});
+            }
+            else res.send({'status': 200});
+        })
+    }
+})
 
 
 
@@ -374,8 +670,151 @@ app.listen(PORT, () => {
 });
 
 
-// YASHWANT //
-app.get("/item_transfer",(req,res) => {
-    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//// YASHWANT MEENA ////////
+app.post("/pending_request", (req, res) => {
+    console.log(req.user);
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let data;
+        let ID =  req.user[0].inv_id;
+        db.query(`SELECT * FROM transfer_log WHERE sen_id = "${ID}" AND status = 0;`, (err, rows) => {
+            if(err){
+                console.log("couldn't fetch inventory data: ", err);
+                res.send({'status': -1});
+            }
+            else{
+                console.log(rows);
+                data = rows;
+                res.send({'status': 1, 'body': data});
+            }
+        })
+    }
 })
+
+app.post("/add-transferlog", (req, res) => {
+    console.log(req.body);
+    let sender_ID = req.user[0].inv_id;
+    let rece_ID = req.body.rece_id;
+    let item_ID = req.body.item_ID;
+    let item_Quantity = req.body.item_Quantity;
+    let transfer_ID =  Number(new Date());
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        db.query('INSERT INTO transfer_log SET ?',{transfer_id : transfer_ID,rec_id : rece_ID,sen_id :sender_ID,item_id : item_ID,quantity :item_Quantity},(error,rows) => {
+           if(error){
+               console.log(error);
+               res.send({'status': -1});
+           }
+           else {
+                console.log("OK MEENA")
+                res.send({'status' : 1}); 
+           }
+        });
+    }
+});
+
+app.post("/received-request", (req, res) => {
+    console.log(req.user);
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let data;
+        let ID =  req.user[0].inv_id;
+        console.log(ID);
+        db.query(`SELECT * FROM transfer_log WHERE rec_id = "${ID}" AND status = 0;`, (err, rows) => {
+            if(err){
+                console.log("couldn't fetch inventory data: ", err);
+                res.send({'status': -1});
+            }
+            else{
+                console.log(rows);
+                data = rows;
+                res.send({'status': 1, 'body': data});
+            }
+        })
+    }
+});
+
+
+app.post("/accept-transfer-request", (req, res) => {
+    console.log(req.body);
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let = data;
+        let dec_id = req.body.tras_id;
+        console.log("TRANSACTION ID :- ",dec_id);
+        db.query(`SELECT * FROM transfer_log WHERE transfer_id = ${dec_id};`,(err,rows) => {
+            if(err){
+                console.log(err);
+                res.send({'status': -1});
+            }else{
+                console.log(rows);
+                console.log("TRANSACTION REQUEST PROCEED .........");
+                data = rows;
+                if(data.length != 0){
+                    let rec_id = data[0].rec_id;
+                    let sen_id = data[0].sen_id;
+                    let item_id = data[0].item_id;
+                    let req_q = data[0].quantity;
+                    let rec_Name = "items_" + rec_id;
+                    let sen_Name = "items_" + sen_id;
+                    console.log(rec_id , sen_id, item_id, reqreq_q, rec_Name, sen_Name);
+                    db.query(`SELECT quantity FROM ${rec_Name} WHERE item_id = ${item_id};`,(err,row)=>{
+                        if(err){
+                            console.log(err);
+                            res.send({'status': -1});
+                            
+                        }else{
+                            let ava_q = row[0].quantity;
+                            if(ava_q < req_q){
+                                let mes = `YOU DO NOT ENOUGH STOCK TO PERFORM THIS TRANSACTION WHERE ITEM ID = ${item_id}`;
+                                res.send({'status' : -1,'body' : mes});
+                            }else{
+                                console.log("PERFORM TRANSACTION................!!!!");
+                                db.query(`UPDATE ${rec_Name} SET quantity = ${ava_q - req_q} WHERE item_id = ${item_id};`,(err,result) =>{
+                                    if(err){
+                                        console.log(err);
+                                        res.send({'status' : -1});
+                                    }else{
+                                        db.query(`UPDATE ${sen_Name} SET quantity = quantity + ${req_q} WHERE item_id = ${item_id};`,(error,result) => {
+                                            if(error){
+                                                console.log(error);
+                                                res.send({'status' : -1});
+                                            }else{
+                                                db.query(`UPDATE transfer_log SET status = 1 WHERE transfer_id = ${dec_id};`,(err,rows) => {
+                                                    if(err){
+                                                        console.log(err);
+                                                        res.send({'status' : -1});
+                                                    }else{
+                                                        let mes = `TRANSACTION SUCCESSFUL`;
+                                                        res.send({'status' : -1,'body' : mes});
+                                                    }
+                                                })
+                                            }
+                                        });
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
+            }
+        });
+    }
+});

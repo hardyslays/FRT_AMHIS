@@ -1,11 +1,12 @@
 <div class="nav-options d-flex justify-start">
-    <button onclick="load_inventory_list()" id="inv-list-btn" class="btn btn-outline-dark m-2">INVENTORY LIST</button>
+    <button onclick="load_inventory_list()" id="inv-list-btn" class="btn btn-dark m-2">INVENTORY LIST</button>
+    <button onclick="load_items_list()" id="items-list-btn" class="btn btn-outline-dark m-2">ITEMS LIST</button>
     <button onclick="load_add_item()" id="inv-add-btn" class="btn btn-outline-dark m-2">ADD ITEM</button>
     <button onclick="load_rem_item()" id="inv-rem-btn" class="btn btn-outline-dark m-2">WITHDRAW/REMOVE ITEM</button>
-    <button onclick="load_set_min_quantity()" id="set-min-btn" class="btn btn-dark m-2">SET MINIMUM QUANTITY</button>
+    <button onclick="load_set_min_quantity()" id="set-min-btn" class="btn btn-outline-dark m-2">SET/REMOVE MINIMUM QUANTITY</button>
 </div>
 
-<div id="inv-items" style="display: none;">
+<div id="inv-items">
     <h2>ITEMS IN THE INVENTORY</h2>
 
     <div class="container" id="inv-list">
@@ -17,30 +18,22 @@
             <div class="col">MIN. QUANTITY</div>
         </div>
         <div id="inv-body">
-            <div class="row">
-                <div class="col col-1">1</div>
-                <div class="col col-2">Combiflam</div>
-                <div class="col col-5">600mg</div>
-                <div class="col">20</div>
-                <div class="col">5</div>
-            </div>
             
-            <div class="row">
-                <div class="col col-1">1</div>
-                <div class="col col-2">Combiflam</div>
-                <div class="col col-5">600mg</div>
-                <div class="col">20</div>
-                <div class="col">5</div>
-            </div>
-            
-            <div class="row">
-                <div class="col col-1">1</div>
-                <div class="col col-2">Combiflam</div>
-                <div class="col col-5">600mg</div>
-                <div class="col">20</div>
-                <div class="col">5</div>
-            </div>
         </div>
+    </div>
+</div>
+
+<div id="items-list">
+    <div id="search-items-bar">
+
+    </div>
+    <div id="items-table" class="container">
+        <div class="row head">
+            <div class="col">ITEM ID</div>
+            <div class="col">ITEM NAME</div>
+            <div class="col">ITEM DESCRIPTION</div>
+        </div>
+        <div id="items-list-body"></div>
     </div>
 </div>
 
@@ -163,8 +156,27 @@
     </div>
 </div>
 
-<div id="set-min-quan">
-    set
+<div id="set-min-quan"  style="display: none;">
+    <h2>SET/REMOVE MINIMUM QUANTITY OF ITEMS FOR ALERT</h2>
+    
+    <h3>1. Enter item ID and minimum quantity for adding minimum quantity alert of the item.</h3>
+    <h3>2. To remove Minimum quantity alert from an Item, enter item ID and "-1" in minimum quantity input.</h3>
+
+    <div class="container">
+        <div class="row">
+                <div class="col form-floating my-3">
+                    <input type="text" name="item_id6" id="item_id6" placeholder="enter item_id..." class="form-control rounded " required>
+                    <label for="item_id6">ITEM ID</label>
+                </div>
+            <div class="col form-floating my-3">
+                <input type="text" name="quantity6" id="quantity6" placeholder="enter quantity6..." class="form-control rounded" required>
+                <label for="quantity6">MINIMUM QUANTITY FOR ALERT</label>
+            </div>
+        </div>
+    </div>
+    
+    <button id="min-quan" class="mt-3" onclick="min_quan()">SET MINIMUM QUANTITY ALERT</button>
+
 </div>
 
 <script src="/js/inventory.js"></script>

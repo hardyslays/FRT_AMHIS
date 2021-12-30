@@ -1,1 +1,156 @@
-transfer automation
+<!-- //Connections
+// > Item Sending Connections
+// > Item recieving Connenctions
+//Send item-recieving automation connection
+//Pending requests for connection -->
+
+<div class="nav-options d-flex justify-start">
+    <button onclick="load_automation_list()" id="connection-btn" class="btn btn-outline-dark m-2">CONNECTIONS</button>
+    <button onclick="load_send_connection()" id="send-connection-btn" class="btn btn-outline-dark m-2">SEND CONNECTION REQUEST</button>
+    <button onclick="load_pending_connection()" id="pending-connection-btn" class="btn btn-outline-dark m-2">PENDING REQUESTS</button>
+    <button onclick="load_request_history()" id="req-history-btn" class="btn btn-outline-dark m-2">REQUESTS HISTORY</button>
+    <button onclick="load_automation_transfer_log()" id="automation-transfer-log-btn" class="btn btn-dark m-2">TRANSFER LOG</button>
+    <button onclick="load_automation_issue()" id="automation-issues-btn" class="btn btn-outline-dark m-2">ISSUES</button>
+</div>
+
+<div id="connections" style="display: none;">
+    <h2>ITEM SENDING CONNECTIONS</h2>
+    <div id="sending-connections" class="container connections-table">
+            <div class="row head">
+                <div class="col">RECEIVER ID</div>
+                <div class="col">RECEIVER NAME</div>
+                <div class="col">ITEM ID</div>
+                <div class="col">MINIMUM QUANTITY</div>
+                <div class="col">TRANFER QUANTITY</div>
+            </div>
+            <div id="send_table_body">
+            </div>
+    </div>
+
+    <h2>ITEM-RECEIVING CONNECTIONS</h2>
+    <div id="rec_connect" class="container connections-table">
+        <div class="row head">
+            <div class="col">SENDER ID</div>
+            <div class="col">SENDER NAME</div>
+            <div class="col">ITEM ID</div>
+            <div class="col">MINIMUM QUANTITY</div>
+            <div class="col">TRANFER QUANTITY</div>
+        </div>
+        <div id="rec_table_body">
+        </div>
+    </div>
+</div>
+
+<div id="send-connection" style="display: none;">
+    <h2>SEND ITEM RECEIVING AUTOMATION CONNECTION REQUEST</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col form-floating my-3">
+                <input type="text" name="sender_id10" id="sender_id10" placeholder="enter sender_id..." class="form-control rounded " required>
+                <label for="sender_id10">SENDER ID</label>
+            </div>
+    
+            <div class="col form-floating my-3">
+                <input type="text" name="item_id10" id="item_id10" placeholder="enter item_id..." class="form-control rounded" required>
+                <label for="item_id10">ITEM ID</label>
+            </div>
+            <div class="w-100"></div>
+            <div class="col form-floating my-3">
+                <input type="text" name="min_quan10" id="min_quan10" placeholder="enter min_quan..." class="form-control rounded" required>
+                <label for="min_quan10">MINIMUM QUANTITY</label>
+            </div>            
+            <div class="col form-floating my-3">
+                <input type="text" name="transfer_quan10" id="transfer_quan10" placeholder="enter transfer_quan..." class="form-control rounded" required>
+                <label for="transfer_quan10">TRANSFER QUANTITY</label>
+            </div>
+        </div>
+        
+        <button id="send-connection-submit" onclick="submit_send_connection()">ADD ITEM</button>
+    
+    </div>
+</div>
+
+<div id="pending-connection" style="display: none;">
+    <h2>PENDING REQUESTS</h2>
+    <div id="requests-table" class="container connections-table">
+            <div class="row head">
+                <div class="col">RECEIVER ID</div>
+                <div class="col">RECEIVER NAME</div>
+                <div class="col">ITEM ID</div>
+                <div class="col">MINIMUM QUANTITY</div>
+                <div class="col">TRANFER QUANTITY</div>
+                <div class="col col-4">ACCEPT/DECLINE</div>
+            </div>
+            <div id="pending_req_table">
+            </div>
+    </div>
+</div>
+
+<div id="request-history" style="display: none;">
+    <h2>CONNECTION REQUEST HISTORY</h2>
+    <div id="req-history-table" class="container connections-table">
+        <div class="row head">
+            <div class="col">SENDER ID</div>
+            <div class="col">ITEM ID</div>
+            <div class="col">MINIMUM QUANTITY</div>
+            <div class="col">TRANSFER QUANTITY</div>
+            <div class="col">ACCEPTED/DECLINED</div>
+        </div>
+        <div id="req_history_table">
+        </div>
+    </div>
+</div>
+
+<div id="automation-transfer-log">
+    <h2>ITEM SENDING TRANSFER LOG</h2>
+    <div id="sending-transfer" class="container connections-table">
+            <div class="row head">
+                <div class="col">RECEIVER ID</div>
+                <div class="col">ITEM ID</div>
+                <div class="col">PREVIOUS QUANTITY</div>
+                <div class="col">TRANFER QUANTITY</div>
+            </div>
+            <div id="sender_auto_transfer">
+
+            </div>
+    </div>
+
+    <h2>ITEM-RECEIVING TRANSFER LOG</h2>
+    <div id=receiving-transfer" class="container connections-table">
+        <div class="row head">
+            <div class="col">SENDER ID</div>
+            <div class="col">ITEM ID</div>
+            <div class="col">PREVIOUS QUANTITY</div>
+            <div class="col">TRANFER QUANTITY</div>
+        </div>
+        <div id="receiver_auto_transfer"></div>
+    </div>
+
+</div>
+
+<div id="issues" style="display: none;">
+    <h2>ITEM SENDING ISSUES</h2>
+    <div id="sending-issues" class="container connections-table">
+            <div class="row head">
+                <div class="col">RECEIVER ID</div>
+                <div class="col">ITEM ID</div>
+                <div class="col">PREVIOUS QUANTITY</div>
+                <div class="col">TRANFER QUANTITY</div>
+            </div>
+            <div id="sender_auto_issue"></div>
+    </div>
+
+    <h2>ITEM-RECEIVING ISSUES</h2>
+    <div id=receiving-issues" class="container connections-table">
+        <div class="row head">
+            <div class="col">SENDER ID</div>
+            <div class="col">ITEM ID</div>
+            <div class="col">PREVIOUS QUANTITY</div>
+            <div class="col">TRANFER QUANTITY</div>
+        </div>
+        <div id="receiver_auto_issue"></div>
+    </div>
+</div>
+
+<script src="/js/transfer_automation.js"></script>
