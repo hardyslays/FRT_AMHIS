@@ -694,7 +694,7 @@ app.post("/pending_request", (req, res) => {
     else{
         let data;
         let ID =  req.user[0].inv_id;
-        db.query(`SELECT * FROM transfer_log WHERE sen_id = "${ID}" AND status = 0;`, (err, rows) => {
+        db.query(`SELECT * FROM transfer_log JOIN items ON transfer_log.item_id = items.item_id WHERE transfer_log.sen_id = "${ID}" AND transfer_log.status = 0;`, (err, rows) => {
             if(err){
                 console.log("couldn't fetch inventory data: ", err);
                 res.send({'status': -1});
@@ -756,7 +756,7 @@ app.post("/accept-transfer-request", (req, res) => {
     console.log(req.body);
     if(!req.isAuthenticated())res.send({'status': 0});
     else{
-        let = data;
+        let data;
         let dec_id = req.body.tras_id;
         console.log("TRANSACTION ID :- ",dec_id);
         db.query(`SELECT * FROM transfer_log WHERE transfer_id = ${dec_id};`,(err,rows) => {
@@ -774,13 +774,18 @@ app.post("/accept-transfer-request", (req, res) => {
                     let req_q = data[0].quantity;
                     let rec_Name = "items_" + rec_id;
                     let sen_Name = "items_" + sen_id;
-                    console.log(rec_id , sen_id, item_id, reqreq_q, rec_Name, sen_Name);
+                    console.log(rec_id , sen_id, item_id, req_q, rec_Name, sen_Name);
                     db.query(`SELECT quantity FROM ${rec_Name} WHERE item_id = ${item_id};`,(err,row)=>{
                         if(err){
                             console.log(err);
                             res.send({'status': -1});
                             
-                        }else{
+                        }
+                        else if(!rows.length){
+                            let mes = `YOU DO NOT ENOUGH STOCK TO PERFORM THIS TRANSACTION WHERE ITEM ID = ${item_id}`;
+                            res.send({'status' : -1,'body' : mes});
+                        }
+                        else{
                             let ava_q = row[0].quantity;
                             if(ava_q < req_q){
                                 let mes = `YOU DO NOT ENOUGH STOCK TO PERFORM THIS TRANSACTION WHERE ITEM ID = ${item_id}`;
@@ -792,20 +797,58 @@ app.post("/accept-transfer-request", (req, res) => {
                                         console.log(err);
                                         res.send({'status' : -1});
                                     }else{
-                                        db.query(`UPDATE ${sen_Name} SET quantity = quantity + ${req_q} WHERE item_id = ${item_id};`,(error,result) => {
-                                            if(error){
-                                                console.log(error);
-                                                res.send({'status' : -1});
+                                        db.query(`SELECT quantity FROM ${sen_Name} WHERE item_id = ${item_id};`,(err,row) => {
+                                            if(err){
+                                                console.log(err);
                                             }else{
-                                                db.query(`UPDATE transfer_log SET status = 1 WHERE transfer_id = ${dec_id};`,(err,rows) => {
-                                                    if(err){
-                                                        console.log(err);
-                                                        res.send({'status' : -1});
-                                                    }else{
-                                                        let mes = `TRANSACTION SUCCESSFUL`;
-                                                        res.send({'status' : -1,'body' : mes});
-                                                    }
-                                                })
+                                                if(row.length != 0){
+                                                    console.log("QUANTITY PRESENT......");
+                                                    db.query(`UPDATE ${sen_Name} SET quantity = quantity + ${req_q} WHERE item_id = ${item_id};`,(error,result) => {
+                                                        if(error){
+                                                            console.log(error);
+                                                            res.send({'status' : -1});
+                                                        }else{
+                                                            db.query(`UPDATE transfer_log SET status = 1 WHERE transfer_id = ${dec_id};`,(err,rows) => {
+                                                                if(err){
+                                                                    console.log(err);
+                                                                    res.send({'status' : -1});
+                                                                }else{
+                                                                    let mes = `TRANSACTION SUCCESSFUL`;
+                                                                    res.send({'status' : 1,'body' : mes});
+                                                                }
+                                                            })
+                                                        }
+                                                    });
+                                                }else{
+                                                    console.log("INSERT INTO TABEL......");
+                                                    let item_d;
+                                                    db.query(`SELECT * FROM items WHERE item_id = ${item_id};`,(err,row) => {
+                                                        if(err){
+                                                            console.log(err);
+                                                            res.send({'status' : -1});
+                                                        }else{
+                                                            console.log("ITEM DESCRIPTION.....");
+                                                            console.log(row);
+                                                            item_d = row;
+                                                            db.query(`INSERT INTO ${sen_Name} SET ?`,{item_id : item_id, item_name : item_d[0].item_name, item_desc :item_d[0].item_desc,quantity : req_q},(error,rows) =>{
+                                                                if(error){
+                                                                    console.log(error);
+                                                                    res.send({'status' : -1});                                                  
+                                                                }else{
+                                                                    db.query(`UPDATE transfer_log SET status = 1 WHERE transfer_id = ${dec_id};`,(err,rows) => {
+                                                                        if(err){
+                                                                            console.log(err);
+                                                                            res.send({'status' : -1});
+                                                                        }else{
+                                                                            let mes = `TRANSACTION SUCCESSFUL`;
+                                                                            res.send({'status' : 1,'body' : mes});
+                                                                        }
+                                                                    })
+                                                                }
+                                                            })
+                                                        }
+                                                    })
+                                                }
                                             }
                                         });
                                     }
@@ -818,3 +861,45 @@ app.post("/accept-transfer-request", (req, res) => {
         });
     }
 });
+
+
+app.post("/decline-transfer-request", (req, res) => {
+    console.log(req.body);
+    if(!req.isAuthenticated()){
+        console.log("not authorised")
+        res.send({'status': 0});
+    }
+    else{
+        let dec_id = req.body.tras_id;
+        console.log(dec_id);
+        db.query(`UPDATE transfer_log SET status = -1 WHERE transfer_id = ${dec_id};`,(err,rows) => {
+            if(err){
+                console.log(err);
+                res.send({'status' : -1});
+            }else{
+                let mes = `TRANSACTION DECLINE...`;
+                res.send({'status' : 1,'body' : mes});
+            }
+        })
+    }
+});
+
+
+app.post("/load_transfer_log",(req,res) => {
+    if(!req.isAuthenticated())res.send({'status': 0});
+    else{
+        let data;
+        let ID =  req.user[0].inv_id;
+        db.query(`SELECT * FROM transfer_log JOIN items ON transfer_log.item_id = items.item_id WHERE transfer_log.sen_id = "${ID}" OR transfer_log.rec_id = "${ID}";`, (err, rows) => {
+            if(err){
+                console.log("couldn't fetch inventory data: ", err);
+                res.send({'status': -1});
+            }
+            else{
+                console.log(rows);
+                data = rows;
+                res.send({'status': 1, 'body': data});
+            }
+        })
+    }
+})

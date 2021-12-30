@@ -3,7 +3,7 @@
     <button onclick="load_send_request()" id = "inv-send-request" class="btn btn-outline-dark m-2">SEND REQUEST</button>
     <button onclick="load_pending_request()" id = "inv-pending-request" class="btn btn-outline-dark m-2">PENDING REQUESTS</button>
     <button onclick="load_received_request()" id = "inv-received-request" class="btn btn-outline-dark m-2">RECEVIED REQUESTS</button>
-    <button onclick="load_suc_tans()" id = "inv-successful" class="btn btn-outline-dark m-2">SUCCESSFUL TRANSACTION</buttons>
+    <button onclick="load_tansfer_log()" id = "inv-successful" class="btn btn-outline-dark m-2">SUCCESSFUL TRANSACTION</buttons>
 </div>
 
 <div id="send-request">
@@ -15,7 +15,7 @@
         <div class="row">         
             <div class="col form-floating my-3">
                 <input type="text" name="rece_id" id="receive_id" placeholder="enter item_id..." class="form-control rounded " required>
-                <label for="receive_id">RECEIVER ID</label>
+                <label for="receive_id">SENDER ID</label>
             </div>
     
             <div class="col form-floating my-3">
@@ -39,14 +39,13 @@
 
     <div class="container" id="inv-list">
         <div class="row inv-head">
-            <div class="col col-1">ID</div>
-            <div class="col col-2">ITEM NAME</div>
-            <div class="col col-5">DESCRIPTION</div>
+            <div class="col">SENDER ID</div>
+            <div class="col">ITEM ID</div>
+            <div class="col">ITEM NAME</div>
+            <div class="col">DESCRIPTION</div>
             <div class="col">QUANTITY ASKED</div>
-            <div class="col">STATUS</div>
         </div>
         <div id="pending_table_1">
-            
         </div>
     </div>
 </div>
@@ -56,9 +55,9 @@
 
     <div class="container" id="inv-list">
         <div class="row inv-head">
-            <div class="col">ITEM_ID</div>
+            <div class="col">ITEM ID</div>
             <div class="col">QUANTITY</div>
-            <div class="col">SENDER_ID</div>
+            <div class="col">RECEIVER ID</div>
             <div class="col">ACCEPT/DECLINE</div>
         </div>
         <div id="received_request_table">
@@ -67,17 +66,19 @@
     </div>
 </div>
 <div id="success" style="display : none">
-    <h2>SUCCESSFUL TRANSACTION</h2>
+    <h2>TRANSFER LOG</h2>
 
     <div class="container" id="inv-list">
         <div class="row inv-head">
-            <div class="col">ID</div>
+            <div class="col">RECEIVER ID</div>
+            <div class="col">SENDER ID</div>
+            <div class="col">ITEM ID</div>
             <div class="col">ITEM NAME</div>
             <div class="col">DESCRIPTION</div>
             <div class="col">QUANTITY RECEVIED</div>
             <div class="col">STATUS</div>
         </div>
-        <div id="inv-body2">
+        <div id="transfer_log_table">
             
         </div>
     </div>

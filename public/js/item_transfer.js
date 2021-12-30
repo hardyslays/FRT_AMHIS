@@ -41,31 +41,54 @@ function make_pending_table(body,id){
         let row = document.createElement('div');
         row.classList.add("row");
         
+        let sen_id = document.createElement('div');
+        sen_id.classList.add("col");
+        sen_id.innerText = el.sen_id;
+
         let id_col = document.createElement('div');
-        id_col.classList.add("col", "col-1");
+        id_col.classList.add("col");
         id_col.innerText = el.item_id;
         
         let name_col = document.createElement('div');
-        name_col.classList.add("col", "col-2");
+        name_col.classList.add("col");
         name_col.innerText = el.item_name;
             
         let desc_col = document.createElement('div');
-        desc_col.classList.add("col", "col-5");
+        desc_col.classList.add("col");
         desc_col.innerText = el.item_desc;
         
         let quan_col = document.createElement('div');
         quan_col.classList.add("col");
         quan_col.innerText = el.quantity;
-        
-        let min_quan_col = document.createElement('div');
-        min_quan_col.classList.add("col");
-        min_quan_col.innerText = (el.min_quantity == null? "N/A" : el.min_quantity);
 
+
+        let status = document.createElement('div');
+        status.classList.add("col");
+        if(el.status == 0)
+        status.innerText = "PENDING";
+        else if(el.status == 1)
+            status.innerText = "ACCEPTED";
+        else
+            status.innerText = "DECLINE";
+
+        
+        row.appendChild(sen_id);
+        if(id == "transfer_log_table"){
+            let rec_id = document.createElement('div');
+            rec_id.classList.add("col");
+            rec_id.innerText = el.rec_id;
+            
+            row.appendChild(rec_id);
+        }
         row.appendChild(id_col);
         row.appendChild(name_col);
         row.appendChild(desc_col);
         row.appendChild(quan_col);
-        row.appendChild(min_quan_col);
+
+        if(id == "transfer_log_table"){
+            row.appendChild(status);
+        }
+
         inv_body.appendChild(row);
     });
 }
@@ -154,6 +177,8 @@ function accept_request(tras_id){
         'tras_id' : tras_id
     }
 
+    console.log(body)
+
     fetch("/accept-transfer-request",{
         method: "POST",
         headers: {
@@ -161,31 +186,33 @@ function accept_request(tras_id){
         },
         'body': JSON.stringify(body)
     })
-    .then( () => {
-        load_pending_request();
-    })
+    .then(response => response.json())
     .then(data => {
+        load_pending_request();
         alert(data.body.mes);
     });
 }
 
-// function decline_request(tras_id){
-//     alert("TRANSACTION IS DELCIN PERMANENTLY");
-//     let body = {
-//         'tras_id' : tras_id
-//     }
+function decline_request(tras_id){
+    let body = {
+        'tras_id' : tras_id
+    }
 
-//     fetch("/decline-transfer-request",{
-//         method: "POST",
-//         headers: {
-//             'content-type': 'application/json'
-//         },
-//         'body': JSON.stringify(body)
-//     })
-//     .then( () => {
-//         load_pending_request();
-//     })
-// }
+    fetch("/decline-transfer-request",{
+        method: "POST",
+        headers: {
+            'content-type': 'application/json'
+        },
+        'body': JSON.stringify(body)
+    })
+    .then(response => response.json())
+    .then( (data) => {
+        console.log("status", data.status)
+        alert("TRANSACTION IS DECLINE PERMANENTLY.....");
+        load_pending_request();
+        alert(data.body.mes);
+    })
+}
 
 function make_received_request_table(body){
     let table = document.getElementById("received_request_table");
@@ -247,6 +274,28 @@ function load_received_request(){
             setActive("inv-received-request");
             console.log(data.body);
             make_received_request_table(data.body);
+        }
+        else{
+            alert("Something went wrong while fetchin data.\nLogout and login again to fix the issue, Or contact the admin if problem pursue.");   
+        }
+    });
+}
+
+
+function load_tansfer_log(){
+
+    fetch("/load_transfer_log", {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then( data => {
+        console.log(data);
+        if(data.status == 1){
+            setActive("inv-successful");
+            make_pending_table(data.body,"transfer_log_table");
         }
         else{
             alert("Something went wrong while fetchin data.\nLogout and login again to fix the issue, Or contact the admin if problem pursue.");   

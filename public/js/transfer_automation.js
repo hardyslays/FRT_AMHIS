@@ -212,7 +212,7 @@ function load_send_connection(){
 
 //See pending request table
 
-function accept_request(rec_id, item_id){
+function accept_auto_req(rec_id, item_id){
     let body = {
         'rec_id': rec_id,
         'item_id': item_id
@@ -231,7 +231,7 @@ function accept_request(rec_id, item_id){
     })
 }
 
-function decline_request(rec_id, item_id){
+function decline_auto_request(rec_id, item_id){
     let body = {
         'rec_id': rec_id,
         'item_id': item_id
@@ -280,12 +280,12 @@ function make_pending_reqeusts_table(body){
 
         let acceptBtn = document.createElement("button");
         acceptBtn.classList.add("green", "decideBtn");
-        acceptBtn.setAttribute("onclick", `accept_request("${el.rec_id}", "${el.Item_id}")`);
+        acceptBtn.setAttribute("onclick", `accept_auto_req("${el.rec_id}", "${el.Item_id}")`);
         acceptBtn.innerText = "ACCEPT";
         
         let declineBtn = document.createElement("button");
         declineBtn.classList.add("red", "decideBtn");
-        declineBtn.setAttribute("onclick", `decline_request("${el.rec_id}", "${el.Item_id}")`);
+        declineBtn.setAttribute("onclick", `decline_auto_request("${el.rec_id}", "${el.Item_id}")`);
         declineBtn.innerText = "DECLINE";
 
         let btnCol = document.createElement("div");

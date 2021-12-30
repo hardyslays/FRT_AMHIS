@@ -297,7 +297,41 @@ body{
 }
 
 
+#pending-request{
+    margin: 25px;
+    font-size: 20px;
+    text-align: center;
+}
+#pending-request>h2{
+    background: #212529;
+    color: #EEE;
+    padding: 1rem;
+    font-weight: bolder;
+}
 
+#received-request{
+    margin: 25px;
+    font-size: 20px;
+    text-align: center;
+}
+#received-request>h2{
+    background: #212529;
+    color: #EEE;
+    padding: 1rem;
+    font-weight: bolder;
+}
+
+#success{
+    margin: 25px;
+    font-size: 20px;
+    text-align: center;
+}
+#success>h2{
+    background: #212529;
+    color: #EEE;
+    padding: 1rem;
+    font-weight: bolder;
+}
 
 
 /* TRANSFER AUTOMATION PAGE */
