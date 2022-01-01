@@ -457,17 +457,12 @@ function make_sender_auto_log(body){
         item_id.classList.add("col");
         item_id.innerText = el.item_id;
 
-        let prev_quantity = document.createElement("div");
-        prev_quantity.classList.add("col");
-        prev_quantity.innerText = el.prev_quantity;
-
         let quantity = document.createElement("div");
         quantity.classList.add("col");
         quantity.innerText = el.quantity;
-
+        
         row.appendChild(rec_id);
         row.appendChild(item_id);
-        row.appendChild(prev_quantity);
         row.appendChild(quantity);
 
         table.appendChild(row);
@@ -489,17 +484,12 @@ function make_receiver_auto_log(body){
         item_id.classList.add("col");
         item_id.innerText = el.item_id;
 
-        let prev_quantity = document.createElement("div");
-        prev_quantity.classList.add("col");
-        prev_quantity.innerText = el.prev_quantity;
-
         let quantity = document.createElement("div");
         quantity.classList.add("col");
         quantity.innerText = el.quantity;
 
         row.appendChild(sen_id);
         row.appendChild(item_id);
-        row.appendChild(prev_quantity);
         row.appendChild(quantity);
         
         table.appendChild(row);
@@ -579,17 +569,12 @@ function make_sender_auto_issue(body){
         item_id.classList.add("col");
         item_id.innerText = el.item_id;
 
-        let prev_quantity = document.createElement("div");
-        prev_quantity.classList.add("col");
-        prev_quantity.innerText = el.prev_quantity;
-
         let quantity = document.createElement("div");
         quantity.classList.add("col");
         quantity.innerText = el.quantity;
 
         row.appendChild(rec_id);
         row.appendChild(item_id);
-        row.appendChild(prev_quantity);
         row.appendChild(quantity);
 
         table.appendChild(row);
@@ -611,17 +596,12 @@ function make_receiver_auto_issue(body){
         item_id.classList.add("col");
         item_id.innerText = el.item_id;
 
-        let prev_quantity = document.createElement("div");
-        prev_quantity.classList.add("col");
-        prev_quantity.innerText = el.prev_quantity;
-
         let quantity = document.createElement("div");
         quantity.classList.add("col");
         quantity.innerText = el.quantity;
 
         row.appendChild(sen_id);
         row.appendChild(item_id);
-        row.appendChild(prev_quantity);
         row.appendChild(quantity);
         
         table.appendChild(row);

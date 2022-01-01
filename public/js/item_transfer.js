@@ -43,7 +43,7 @@ function make_pending_table(body,id){
         
         let sen_id = document.createElement('div');
         sen_id.classList.add("col");
-        sen_id.innerText = el.sen_id;
+        sen_id.innerText = el.rec_id;
 
         let id_col = document.createElement('div');
         id_col.classList.add("col");
@@ -76,7 +76,7 @@ function make_pending_table(body,id){
         if(id == "transfer_log_table"){
             let rec_id = document.createElement('div');
             rec_id.classList.add("col");
-            rec_id.innerText = el.rec_id;
+            rec_id.innerText = el.sen_id;
             
             row.appendChild(rec_id);
         }

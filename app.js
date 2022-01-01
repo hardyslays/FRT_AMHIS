@@ -7,11 +7,10 @@ const db = require("./db")
 const passport = require('passport')
 const localStrategy = require('passport-local').Strategy
 const flash = require('flash')
-const { redirect } = require('express/lib/response')
-const req = require('express/lib/request')
+const rp = require("request-promise")
 
 
-
+const auto = require("./automation")
 
 
 
@@ -399,7 +398,26 @@ app.post("/add-quantity", (req, res) => {
             }
             else{
                 if(!rows.length){
-                    res.send({'status': 11});
+                    db.query(`SELECT * FROM items WHERE item_id = "${req.body.item_id}";`, (err, rows) => {
+                        if(err){
+                            console.log("couldn't fatch inventory data: ", err);
+                            res.send({'status': -10});
+                        }
+                        else if(!rows.length){
+                            res.send({'status': 11});
+                        }
+                        else{
+                            db.query(`INSERT INTO ${inventory_name}(item_id,item_name,item_desc,quantity) VALUES("${req.body.item_id}", "${rows[0].item_name}", "${rows[0].item_desc}", ${parseInt(req.body.quantity)})`, (err, rows) => {
+                                if(err){
+                                    console.log("couldn't fatch inventory data: ", err);
+                                    res.send({'status': -10});
+                                }
+                                else{
+                                    res.send({'status': 10});
+                                }
+                            })
+                        }
+                    })
                 }
                 else{
                     console.log(rows[0]);
@@ -421,6 +439,22 @@ app.post("/add-quantity", (req, res) => {
         })
     }
 })
+
+const callAutomation = (req_id, item_id, quantity) => {
+    rp({
+        url: "https://amhis-frt-transfer-automation.azurewebsites.net/api/transfer_automation_between_inventories",
+        method: "POST",
+        body: {
+            'req_id': req_id,
+            'item_id': item_id,
+            'quan': quantity
+        },
+        json: true
+    })
+    .then( (data) => {
+        console.log(data);
+    })
+}
 
 app.post("/rem-quantity", (req, res) =>{
     if(!req.isAuthenticated())res.send({'status': 0});
@@ -447,6 +481,8 @@ app.post("/rem-quantity", (req, res) =>{
                                 res.send({'status': -20});
                             }
                             else{
+                                console.log("rec id: ", req.user[0].inv_id);
+                                callAutomation(req.user[0].inv_id, req.body.item_id, new_quantity);
                                 res.send({'status': 20});
                             }
                         })
@@ -714,7 +750,7 @@ app.post("/add-transferlog", (req, res) => {
     let rece_ID = req.body.rece_id;
     let item_ID = req.body.item_ID;
     let item_Quantity = req.body.item_Quantity;
-    let transfer_ID =  Number(new Date());
+    let transfer_ID =  new Date().getTime();
     if(!req.isAuthenticated())res.send({'status': 0});
     else{
         db.query('INSERT INTO transfer_log SET ?',{transfer_id : transfer_ID,rec_id : rece_ID,sen_id :sender_ID,item_id : item_ID,quantity :item_Quantity},(error,rows) => {
@@ -820,7 +856,7 @@ app.post("/accept-transfer-request", (req, res) => {
                                                         }
                                                     });
                                                 }else{
-                                                    console.log("INSERT INTO TABEL......");
+                                                    console.log("INSERT INTO TABLE......");
                                                     let item_d;
                                                     db.query(`SELECT * FROM items WHERE item_id = ${item_id};`,(err,row) => {
                                                         if(err){
