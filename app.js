@@ -442,7 +442,7 @@ app.post("/add-quantity", (req, res) => {
 
 const callAutomation = (req_id, item_id, quantity) => {
     rp({
-        url: "https://amhis-frt-transfer-automation.azurewebsites.net/api/transfer_automation_between_inventories",
+        url: process.env.FUNCTION_URL,
         method: "POST",
         body: {
             'req_id': req_id,
