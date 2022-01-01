@@ -71,6 +71,10 @@ If you want to run this project on local host, you will need following items for
 5. type and run 'npm start' to start the server on localhost. 
 6. Type 'http://localhost:5000" on browser to run the web app.
 
+# PROJECT RUNNING DEMO
+
+The project's running demo can be found on this link: 'https://frt-amhis-webapp.azurewebsites.net'. It is made using Azure free account so it would not work after exhausting all of the credit Azure provides for free.
+
 # ISSUES
 
 If you find any issues in this project, you can always raise an Issue on this repository, I would be more than happy to learn about my mistakes as I myself am in the learning phase. If you have any suggestions or changes for this project, you can raise a "Pull request" on this repository.
