@@ -75,6 +75,8 @@ If you want to run this project on local host, you will need following items for
 
 The project's running demo can be found on this link: 'https://frt-amhis-webapp.azurewebsites.net'. It is made using Azure free account so it would not work after exhausting all of the credit Azure provides for free.
 
+I have hosted the website for free on Heroku app also. The link is "https://frt-amhis.herokuapp.com/login". Note that the automation part won't work as it can be hosted only on either Azure platforms or on Localhost.
+
 # ISSUES
 
 If you find any issues in this project, you can always raise an Issue on this repository, I would be more than happy to learn about my mistakes as I myself am in the learning phase. If you have any suggestions or changes for this project, you can raise a "Pull request" on this repository.
